@@ -13,3 +13,6 @@ docker-compose.yml
 
 # Don't include TypeScript generated files.
 **/*.js
+
+# Visual Studio Code
+.vscode
