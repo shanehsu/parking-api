@@ -1,21 +1,28 @@
 {
-  "name": "node-js-getting-started",
-  "version": "0.2.5",
-  "description": "A sample Node.js app using Express 4",
+  "name": "parking-api",
+  "version": "0.0.1",
+  "description": "畢業專題 API",
   "engines": {
     "node": "7.x"
   },
   "main": "index.js",
   "scripts": {
+    "prestart": "tsc",
     "start": "node index.js"
   },
   "dependencies": {
-    "ejs": "2.4.1",
-    "express": "4.13.3"
+    "@types/body-parser": "0.0.33",
+    "@types/express": "^4.0.35",
+    "@types/mongodb": "^2.1.38",
+    "body-parser": "^1.16.0",
+    "express": "^4.14.1",
+    "mongodb": "^2.2.22",
+    "morgan": "^1.8.0",
+    "typescript": "^2.1.5"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/heroku/node-js-getting-started"
+    "url": "https://github.com/shanehsu/parking-api"
   },
   "keywords": [
     "node",
