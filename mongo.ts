@@ -12,8 +12,8 @@ type Db = mongodb.Db
 export class MongoDBMiddleware {
   private uri: string
   private client: MongoClient
-  private connectionError: Error
-  private database: Db
+  private connectionError: Error | null
+  private database: Db | null
 
   constructor() {
     this.uri = process.env.MONGODB_URI
@@ -39,7 +39,7 @@ export class MongoDBMiddleware {
 
   get middleware() {
     return (req: Request, res: Response, next: NextFunction) => {
-      if (!this.database) {
+      if (this.database === null) {
         res.status(500).json({
           "message": "資料庫尚未就緒。"
         })

@@ -23,7 +23,7 @@ export class Grids {
    * @memberOf Grids
    */
   get grids(): Grid[] {
-    return this.consecutiveGrids.reduce((accu, curr) => [...accu, ...curr.grids], [])
+    return this.consecutiveGrids.reduce((accu, curr) => [...accu, ...curr.grids], <Grid[]>[])
   }
 
   /**

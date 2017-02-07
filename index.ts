@@ -9,12 +9,12 @@ import { MongoDBMiddleware } from './mongo'
 import { apiRouter } from './api/apiRouter'
 import { ApplicationError } from './util/error'
 
-type MongoClient = mongodb.MongoClient
-type Db = mongodb.Db
+let port: number = Number.parseInt(process.env.PORT) || 5000
 
-let port = process.env.PORT || 5000
+let app = express()
 
-let app = express().use(morgan())
+// 用 morgan 記錄要求
+app.use(morgan('dev'))
 
 app.use('/app', express.static(__dirname + '/app'))
 app.use('/admin', express.static(__dirname + '/admin'))
@@ -25,7 +25,7 @@ app.use(new MongoDBMiddleware().middleware)
 
 app.use('/api', apiRouter)
 
-app.get('/', async (req, res) => {
+app.get('/', (req, res) => {
   res.send('資料庫已經連線')
 })
 
@@ -39,3 +39,4 @@ app.use((err: ApplicationError, req: express.Request, res: express.Response, nex
 app.listen(port, () => {
   debug('app')(`應用程式正在監聽傳輸埠 ${port}`)
 })
+

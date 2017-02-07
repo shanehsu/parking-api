@@ -16,3 +16,7 @@ docker-compose.yml
 
 # Visual Studio Code
 .vscode
+
+# Webpack
+**/bundle.js
+**/bundle.js.map
