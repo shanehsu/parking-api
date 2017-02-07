@@ -1,30 +1,41 @@
-import express = require('express')
-import body_parser = require('body-parser')
-import mongodb = require('mongodb')
+import * as express from "express"
+import * as body_parser from 'body-parser'
+import * as mongodb from 'mongodb'
+import * as morgan from 'morgan'
+import * as debug from 'debug'
+import * as cors from 'cors'
 
-let app = express()
-app.use(body_parser.json())
+import { MongoDBMiddleware } from './mongo'
+import { apiRouter } from './api/apiRouter'
+import { ApplicationError } from './util/error'
 
-app.set('port', (process.env.PORT || 5000))
+type MongoClient = mongodb.MongoClient
+type Db = mongodb.Db
+
+let port = process.env.PORT || 5000
+
+let app = express().use(morgan())
+
 app.use('/app', express.static(__dirname + '/app'))
 app.use('/admin', express.static(__dirname + '/admin'))
 
+app.use(cors())
+app.use(body_parser.json())
+app.use(new MongoDBMiddleware().middleware)
+
+app.use('/api', apiRouter)
+
 app.get('/', async (req, res) => {
-  // 試圖連線至 MongoDB
-  let uri = process.env.MONGODB_URI
-  let client = new mongodb.MongoClient()
-  try {
-    let connection = await client.connect(uri)
-    res.send("Hello World!")
-    connection.close()
-  } catch (err) {
-    res.json({
-      "message": "資料庫連線失敗",
-      "raw": err
-    })
-  }
+  res.send('資料庫已經連線')
 })
 
-app.listen(app.get('port'), () => {
-  console.log(`Node app is running on port ${app.get('port')}`)
+app.use((err: ApplicationError, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  res.status(err.statusCode || 500).send({
+    message: err.message,
+    raw: err.raw
+  })
+})
+
+app.listen(port, () => {
+  debug('app')(`應用程式正在監聽傳輸埠 ${port}`)
 })

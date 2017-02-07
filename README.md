@@ -42,7 +42,11 @@
 
 > *TODO* This will be added later.
 
-#### 停車格 `[/lots]`
+#### 停車場 [`/lots`]
+
+> *TODO* This will be added later.
+
+#### 停車格 `[/spaces]`
 
 ##### 描述方格
 本 API 將台灣劃分成多個方格，每個方格長寬皆為 0.01 度，也就是長寬 1 公里左右。
@@ -63,7 +67,7 @@
 
 ###### 範例
 
-`GET http://localhost:3000/api/v1/lots?blocks=24.01-24.05:120.02-120.10,24.20-24.21,120.02-120.04&available=true`
+`GET http://localhost:3000/api/v1/lots?grids=24.01-24.05:120.02-120.10,24.20-24.21,120.02-120.04&available=true`
 
 > 公共 API
 
@@ -71,7 +75,7 @@
 
 | 必要 | 名稱 | 型態 | 值域 | 預設值 | 說明 |
 | --- | --- | --- | ---- | ----- | --- |
-| 是 | `blocks` | 字串 | 請見方格描述 | 無 | 要取得的方格，數量必須不多於 100 個。 |
+| 是 | `grids` | 字串 | 請見方格描述 | 無 | 要取得的方格，數量必須不多於 100 個。 |
 | 否 | `available` | 布林 | `ture` 或是 `false` | `false` | 若設定為 `true`，則僅顯示空位。 |
 | 否 | `serial` | 布林 | `ture` 或是 `false` | `false` | 若設定為 `true`，則每筆文件中，將會包含 `serial` 欄位。 |
 
@@ -82,7 +86,7 @@
             "_id": "589782a1aa338e21da33152f",
             "available": true,
             "latitude": 24.02,
-            "longitude": 120.02,
+            "longitude": 120.02
             "serial": "CH-CH-7B304C"
         }
     ]
