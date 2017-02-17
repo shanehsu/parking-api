@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import { ApplicationError } from './../../util/error'
 import { Grids, ConsecutiveGrids, Grid } from './util/grid'
+import { createRandom } from './../../util/random'
 
 export let spacesRouter = Router()
 
@@ -20,15 +21,44 @@ spacesRouter.get('/', (req, res, next) => {
       "$or": grids.consecutiveGrids.map(consecutiveGrid => {
         return {
           "longitude": {
-            "$and": [{ "$ge": consecutiveGrid.longitude }, { "$lt": consecutiveGrid.longitude + consecutiveGrid.longitudeGridSpan * 0.1 }]
+            "$and": [{ "$gte": consecutiveGrid.longitude }, { "$lt": consecutiveGrid.longitude + consecutiveGrid.longitudeGridSpan * 0.1 }]
           },
           "latitude": {
-            "$and": [{ "$ge": consecutiveGrid.latitude }, { "$lt": consecutiveGrid.latitude + consecutiveGrid.latitudeGridSpan * 0.1 }]
+            "$and": [{ "$gte": consecutiveGrid.latitude }, { "$lt": consecutiveGrid.latitude + consecutiveGrid.latitudeGridSpan * 0.1 }]
           }
         }
       })
     }
-    let result = req.db.collection('spaces').find(query, {}).toArray()
+
+
+    //Peter
+    if (!req.query.available && !req.query.serial) {
+      let result = req.db.collection('spaces').find(query, {}).toArray().then(
+        result => res.json(result)
+      )
+      res.json(result)
+    } else if (req.query.available && !req.query.serial) {
+      let result = req.db.collection('spaces').find(query, [{ available: { "$eq": true } }, { serial: { "$eq": false } }]).toArray().then(
+        result => res.json(result)
+      )
+
+    } else if (!req.query.avaible && req.query.serial) {
+      let result = req.db.collection('spaces').find(query, [{ available: { "$eq": false } }, { serial: { "$eq": true } }]).toArray().then(
+        result => res.json(result)
+      )
+      res.json(result)
+    } else if (req.query.avaible && req.query.serial) {
+      let result = req.db.collection('spaces').find(query, [{ available: { "$eq": true } }, { serial: { "$eq": true } }]).toArray().then(
+        result => res.json(result)
+      )
+      res.json(result)
+    } else {
+      let result = "無符合資料"
+      throw new ApplicationError(`無符合資料`, 400)
+    }
+    //PeterEnd
+
+    //let result = req.db.collection('spaces').find(query, {}).toArray()
   } catch (err) {
     next(err)
   }
