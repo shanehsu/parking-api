@@ -8,9 +8,8 @@
   "main": "index.js",
   "scripts": {
     "build_admin": "cd admin && npm install && npm run build",
-    "build": "build_admin && tsc",
-    "postinstall": "npm build",
-    "prestart": "npm build",
+    "build": "npm run build_admin && tsc",
+    "postinstall": "npm run build",
     "start": "node index.js"
   },
   "dependencies": {
