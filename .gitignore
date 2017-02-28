@@ -20,3 +20,5 @@ docker-compose.yml
 # Webpack
 **/bundle.js
 **/bundle.js.map
+
+!admin/webpack.config.js

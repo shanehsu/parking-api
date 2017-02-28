@@ -39,7 +39,9 @@ export class MongoDBMiddleware {
 
   get middleware() {
     return (req: Request, res: Response, next: NextFunction) => {
-      if (this.database === null) {
+      if (req.method.toLowerCase() == 'options') {
+        next()
+      } else if (this.database === null) {
         res.status(500).json({
           "message": "資料庫尚未就緒。"
         })
