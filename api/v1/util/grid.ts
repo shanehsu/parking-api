@@ -12,7 +12,8 @@ export class Grids {
    * 
    * @memberOf Grids
    */
-  constructor(public consecutiveGrids: ConsecutiveGrids[]) { }
+  constructor(public consecutiveGrids: ConsecutiveGrids[]) {
+  }
 
 
   /**
@@ -71,8 +72,8 @@ export class ConsecutiveGrids extends Grids {
     public latitude: number,
     public longitudeGridSpan: number,
     public latitudeGridSpan: number) {
-    super([]);
-    super.consecutiveGrids.push(this)
+    super([])
+    this.consecutiveGrids.push(this)
   }
 
   /**

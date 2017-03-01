@@ -47,6 +47,7 @@ export function query(key: string, required: boolean, type: 'string' | 'int' | '
               throw new ApplicationError(`伺服器錯誤，搜尋值 "${key}" 沒有轉換函數`, 500)
             }
           } catch (raw) {
+            console.dir(raw)
             throw new ApplicationError(`搜尋值 "${key}" 轉換錯誤`, 400, raw)
           }
           break

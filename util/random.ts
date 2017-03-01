@@ -1,13 +1,13 @@
 import mongodb = require('mongodb')
 
-interface spaces {
-  available: boolean,
-  latitude: number,
-  longitude: number,
-  name: string,
-  serial: string,
-  rate: [number, number],
-  managedBy: string
+interface Spaces {
+  available: boolean
+  latitude: number
+  longitude: number
+  name: string
+  serial?: string
+  rate: [number, number]
+  managedBy?: string
 }
 
 function randomString(length: number, chars: string) {
@@ -16,7 +16,7 @@ function randomString(length: number, chars: string) {
   return result;
 }
 
-function randomSpaces(): spaces {
+function randomSpaces(): Spaces {
   let latitude: number = 24.063891539189012
   let longitude: number = 120.54062280938389
 
@@ -34,46 +34,38 @@ function randomSpaces(): spaces {
 
   let randName: number = Math.floor(Math.random() * 3)
 
-  //public API
   return {
     available: Math.random() > 0.5,
     latitude: latitude + Math.random() / 100,
     longitude: longitude + Math.random() / 100,
     name: nameArr[randNameInt] + " " + (Math.floor(Math.random() * 100) + 1).toString() + randomString(1, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'),
-    serial: manageSer[randManagerInt] + '-' + nameSer[randNameInt] + '-' + randSerStr,
+    // serial: manageSer[randManagerInt] + '-' + nameSer[randNameInt] + '-' + randSerStr,
     rate: [(Math.floor(Math.random() * 10) + 1), (Math.floor(Math.random() * 20) + 1) * 100],
-    managedBy: manage[randManagerInt]
+    // managedBy: manage[randManagerInt]
   }
 }
 
-function createRandom(db: mongodb.Db) {
+export async function createRandom(db: mongodb.Db, count: number) {
+  let random: Spaces[] = []
+  for (let i = 0; i < count; ++i) {
+    random.push(randomSpaces())
+  }
+  let result = await db.collection('spaces').insert(random)
+  await db.collection('spaces').createIndex({ latitude: 1, longitude: 1 })
+
+  return result
+}
+
+async function run() {
   try {
-    db.collection('spaces').count({}).then((count: number) => {
-      console.log("Create random!!!")
-      if (count == 0) {
-        let random: spaces[] = []
-        for (let i = 0; i < 100; ++i) {
-          random.push(randomSpaces())
-        }
-        db.collection('spaces').insert(random)
-        db.collection('spaces').createIndex({ latitude: 1, longitude: 1 })
-      }
-    })
-  } catch (err) {
-    console.log(err);
-  }
-
-}
-
-(async () => {
-  try{
     let client = new mongodb.MongoClient()
-    let db = await client.connect('')
-    createRandom(db)
-  }catch(err){
-    console.log(err)
+    let db = await client.connect('mongodb://heroku_dcj9z72q:i2hsiklq373enhksf55dnb3pt@ds111940.mlab.com:11940/heroku_dcj9z72q')
+    let result = await createRandom(db, 100)
+    console.dir(result)
+  } catch (err) {
+    console.dir(err)
   }
-})()
+}
 
 
 
