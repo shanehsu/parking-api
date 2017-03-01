@@ -9,6 +9,7 @@ import { MongoDBMiddleware } from './mongo'
 import { apiRouter } from './api/apiRouter'
 import { ApplicationError } from './util/error'
 
+
 let port: number = Number.parseInt(process.env.PORT) || 5000
 
 let app = express()

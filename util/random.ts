@@ -46,9 +46,10 @@ function randomSpaces(): spaces {
   }
 }
 
-export function createRandom(db: mongodb.Db) {
+function createRandom(db: mongodb.Db) {
   try {
     db.collection('spaces').count({}).then((count: number) => {
+      console.log("Create random!!!")
       if (count == 0) {
         let random: spaces[] = []
         for (let i = 0; i < 100; ++i) {
@@ -63,3 +64,16 @@ export function createRandom(db: mongodb.Db) {
   }
 
 }
+
+(async () => {
+  try{
+    let client = new mongodb.MongoClient()
+    let db = await client.connect('')
+    createRandom(db)
+  }catch(err){
+    console.log(err)
+  }
+})()
+
+
+

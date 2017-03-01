@@ -2,6 +2,7 @@ import express = require('express')
 import mongodb = require('mongodb')
 import debug = require('debug')
 
+
 type Request = express.Request
 type Response = express.Response
 type NextFunction = express.NextFunction
@@ -27,6 +28,7 @@ export class MongoDBMiddleware {
   async connect() {
     try {
       debug('db')(`開始連線至 ${this.uri}`)
+      console.log("db connected!!!!!!!!!!!!!!!!!!!!!!")
       let db = await this.client.connect(this.uri)
       this.database = db
       this.connectionError = null
