@@ -23,7 +23,7 @@ export function auth(is: "users" | "admins" | ("users" | "admins")[]) {
 
       // 驗證
       let isUsers = req.header('token') == 'secret_user_token75313'
-      let isAdmins = req.header('token') == 'secret_root_token75313'
+      let isAdmins = req.header('token') == 'secret_root_token31357'
 
       if (isUsers && shouldAllowUsers) {
         next()
