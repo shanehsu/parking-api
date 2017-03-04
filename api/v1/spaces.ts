@@ -22,16 +22,21 @@ spacesRouter.get('/',
 
       let gridsQuery = {
         "$or": grids.consecutiveGrids.map(consecutiveGrid => {
+          //console.log(consecutiveGrid.latitude)
+          //console.log(consecutiveGrid.latitudeGridSpan)
+          //console.log(consecutiveGrid.latitude)
           return {
             "$and": [
               { "longitude": { "$gte": consecutiveGrid.longitude } },
-              { "longitude": { "$lt": consecutiveGrid.longitude + consecutiveGrid.longitudeGridSpan * 0.1 } },
+              { "longitude": { "$lt": consecutiveGrid.longitude + consecutiveGrid.longitudeGridSpan * 0.01 } },
               { "latitude": { "$gte": consecutiveGrid.latitude } },
-              { "latitude": { "$lt": consecutiveGrid.latitude + consecutiveGrid.latitudeGridSpan * 0.1 } }
+              { "latitude": { "$lt": consecutiveGrid.latitude + consecutiveGrid.latitudeGridSpan * 0.01 } }
             ]
           }
         })
       }
+
+      console.log(JSON.stringify(gridsQuery))
 
       // TODO: Move this to query(), use the `default` setting
       let available: boolean = req.query.available === undefined ? false : req.query.available
