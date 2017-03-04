@@ -20,10 +20,6 @@ spacesRouter.get('/',
         throw new ApplicationError(`要求超過 100 個方格。`, 400)
       }
 
-      console.dir(grids)
-      res.json(0)
-      return
-
       let gridsQuery = {
         "$or": grids.consecutiveGrids.map(consecutiveGrid => {
           return {
@@ -47,12 +43,6 @@ spacesRouter.get('/',
       let serial: boolean = req.query.serial === undefined ? false : req.query.serial
 
       let result: any = null
-
-      res.json({
-        "$and": [gridsQuery, availableQuery]
-      })
-
-      return
 
       try {
         result = await req.db.collection('spaces').find({
