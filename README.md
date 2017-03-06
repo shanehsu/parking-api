@@ -30,25 +30,78 @@
 
 其中，若是有 `message` 欄位，則該欄位代表錯誤訊息；若是有 `raw` 欄位，則該欄位將會包含原始錯誤物件。
 
-#### 註冊 `[/register]`
+#### 獨立 OAuth 註冊 `[POST /oauth/register]`
 
 > 公共 API。
 
-##### 使用帳號密碼 `[/standalone]`
+##### 要求主體
 
-> *TODO* This will be added later.
+	{
+		"name": "使用者",
+		"email": "user@example.com",
+		"password": "passw0rd"
+	}
+
+#### 獨立 OAuth 登入 `[POST /oauth?client=parking]`
+
+##### 要求主體
+
+	{
+		"email": "user@example.com",
+		"password": "passw0rd"
+	}
+
+##### 回應主體
+
+    {
+        "accessToken": "jwt-token"
+    }
+
+#### 登入 `[/login]`
+
+> 公共 API。
+
+##### 使用帳號密碼 `[POST /standalone]`
+
+###### 要求主體
+
+	{
+		"name": "使用者",
+		"email": "user@example.com",
+		"password": "passw0rd"
+	}
+
+> 回應請見登入回應
 
 ##### 使用 Facebook `[/social/facebook]`
 
-> *TODO* This will be added later.
+###### 取得 Application ID 以及 Application Secret `[GET /secret]`
+
+####### 回應主體
+
+	{
+		"appId": "1700100203606437",
+		"secret": "c88c8f043d4b3f83389cdc630d4a6931"
+	}
+
+###### 使用 User ID 以及 Access Token 登入 `[POST /]`
+
+####### 要求主體
+
+	{
+		"userId": "1700100203606437",
+		"accessToken": "c88c8f043d4b3f83389cdc630d4a6931"
+	}
 
 ##### 使用 Twitter `[/social/twitter]`
 
 > *TODO* This will be added later.
 
-#### 停車場 [`/lots`]
+##### 登入回應（JWT 代幣）
 
-> *TODO* This will be added later.
+	{
+		"token": ""
+	}
 
 #### 停車格 `[/spaces]`
 
