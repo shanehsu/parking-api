@@ -28,8 +28,9 @@ export class MongoDBMiddleware {
   async connect() {
     try {
       debug('db')(`開始連線至 ${this.uri}`)
-      console.log("db connected!!!!!!!!!!!!!!!!!!!!!!")
+
       let db = await this.client.connect(this.uri)
+      console.log("db connected!!!!!!!!!!!!!!!!!!!!!!")
       this.database = db
       this.connectionError = null
     } catch (err) {

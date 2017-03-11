@@ -59,6 +59,7 @@ export async function createRandom(db: mongodb.Db, count: number) {
 async function run() {
   try {
     let client = new mongodb.MongoClient()
+    let dbUri = process.env.MONGODB_URI
     let db = await client.connect('mongodb://heroku_d2g7rtth:4411ul6akmdnbnuoruchjr1gk4@ds143559.mlab.com:43559/heroku_d2g7rtth')
     let result = await createRandom(db, 100)
     console.dir(result)

@@ -9,7 +9,7 @@ export let spacesRouter = Router()
 
 spacesRouter.get('/',
   auth(['users', 'admins']),
-  query('available', false, 'boolean'),
+  query('all', false, 'boolean'),
   query('serial', false, 'boolean'),
   query('grids', true, 'custom', (value: string) => Grids.parse(value)),
   async (req, res, next) => {
@@ -39,10 +39,19 @@ spacesRouter.get('/',
       console.log(JSON.stringify(gridsQuery))
 
       // TODO: Move this to query(), use the `default` setting
-      let available: boolean = req.query.available === undefined ? false : req.query.available
-      let availableQuery = {
-        "available": available
-      }
+      let all: boolean = req.query.all === undefined ? false : req.query.all
+
+      let allQuery = all === true ? {
+        "available": { $exists: true }
+      } : {
+          "available": all
+        }
+      allQuery = { "available": false }
+      console.log(JSON.stringify(allQuery))
+      // let available: boolean = req.query.available === undefined ? false : req.query.available
+      // let availableQuery = {
+      //   "available": available
+      // }
 
       // TODO: Move this to query(), use the `default` setting
       let serial: boolean = req.query.serial === undefined ? false : req.query.serial
@@ -51,7 +60,7 @@ spacesRouter.get('/',
 
       try {
         result = await req.db.collection('spaces').find({
-          "$and": [gridsQuery, availableQuery]
+          "$and": [gridsQuery, allQuery]
         }, !serial ? { serial: 0 } : undefined).toArray()
       } catch (err) {
         throw new ApplicationError('資料庫錯誤', 500, err)
