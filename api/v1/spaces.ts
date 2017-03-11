@@ -46,7 +46,6 @@ spacesRouter.get('/',
       } : {
           "available": all
         }
-      allQuery = { "available": false }
       console.log(JSON.stringify(allQuery))
       // let available: boolean = req.query.available === undefined ? false : req.query.available
       // let availableQuery = {
