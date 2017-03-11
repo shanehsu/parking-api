@@ -44,7 +44,7 @@ spacesRouter.get('/',
       let allQuery = all === true ? {
         "available": { $exists: true }
       } : {
-          "available": all
+          "available": !all
         }
       console.log(JSON.stringify(allQuery))
       // let available: boolean = req.query.available === undefined ? false : req.query.available
