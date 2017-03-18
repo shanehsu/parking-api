@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "es2015",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "sourceMap": false,
+    "alwaysStrict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "lib": [
+      "es5",
+      "es6",
+      "es2016.array.include",
+      "dom"
+    ]
+  },
+  "exclude": [
+    "node_modules",
+    "app",
+    "admin"
+  ]
+}
