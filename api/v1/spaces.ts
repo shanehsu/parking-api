@@ -46,11 +46,6 @@ spacesRouter.get('/',
       } : {
           "available": !all
         }
-      console.log(JSON.stringify(allQuery))
-      // let available: boolean = req.query.available === undefined ? false : req.query.available
-      // let availableQuery = {
-      //   "available": available
-      // }
 
       // TODO: Move this to query(), use the `default` setting
       let serial: boolean = req.query.serial === undefined ? false : req.query.serial
