@@ -28,7 +28,7 @@ checkFbRouter.post('/checkToken', async function (req, res, next) {
             "access_token": qs.escape(checkToken),
         }
     }).then(data => {
-        let fbId = data.me.id
+        let fbId = data.body.me.id
         res.json(data).status(200)
         let db: MongoDb.Db = req.db
 
