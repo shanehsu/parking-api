@@ -4,6 +4,7 @@ import qs = require('querystring')
 import crypto = require('crypto')
 import { ApplicationError } from '../util/error'
 import MongoDb = require('mongodb')
+
 export let checkFbRouter = Router()
 
 let appId = '400713556954643'
@@ -27,16 +28,21 @@ checkFbRouter.post('/checkToken', async function (req, res, next) {
             "appsecret_proof": crypto.createHmac('sha256', secret).update(checkToken).digest('hex'),
             "access_token": qs.escape(checkToken),
         }
-    }).then(data => {
+    }).then(async data => {
         let fbId = data.body.me.id
         res.json(data).status(200)
-        let db: MongoDb.Db = req.db
 
-        let result = req.db.collection('fbUser').find(
-            { "accessToken": { $eq: checkToken } }, {}
+
+        let result = await req.db.collection('fbUser').find(
+            { "accessToken": { $eq: checkToken } }
         )
-        if (result) { } else {
-            db.collection('fbUser').insert({ "access_token": checkToken, "fb_Id": fbId })
+
+        if (result) {
+            res.json(result)
+        } else {
+            let result = await req.db.collection('fbUser').insert({ "access_token": checkToken, "fb_Id": fbId }).then(result => {
+                res.json(result)
+            })
         }
     }).catch(err => {
         res.json(err).status(500)
