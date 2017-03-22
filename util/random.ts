@@ -55,7 +55,7 @@ function randomSpaces(): Spaces {
 
 export async function createRandom(db: mongodb.Db, count: number) {
   let random_spaces: Spaces[] = []
-  let random_sensor: sensor[] = []
+  let random_sensors: sensor[] = []
 
   for (let i = 0; i < count; ++i) {
     let randSpace = randomSpaces()
@@ -65,11 +65,11 @@ export async function createRandom(db: mongodb.Db, count: number) {
       longitude: randSpace.longitude
     }
     random_spaces.push(randSpace)
-    random_sensor.push(randSen)
+    random_sensors.push(randSen)
   }
 
   let result_spaces = await db.collection('spaces').insert(random_spaces)
-  let result_sensor = await db.collection('sensors').insert(random_sensor)
+  let result_sensor = await db.collection('sensors').insert(random_sensors)
 
   await db.collection('spaces').createIndex({ latitude: 1, longitude: 1 })
 
