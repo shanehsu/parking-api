@@ -69,6 +69,7 @@ spacesRouter.get('/',
 spacesRouter.post('/random', auth('admins'), async (req, res, next) => {
   let count = Number.isNaN(+req.body.count) ? 100 : +req.body.count
   try {
+    req.db.collection('spaces').remove({})
     let result = await createRandom(req.db, count)
     res.json(result)
   } catch (err) {
