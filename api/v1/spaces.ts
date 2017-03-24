@@ -55,7 +55,11 @@ spacesRouter.get('/',
       try {
         result = await req.db.collection('spaces').find({
           "$and": [gridsQuery, allQuery]
-        }, !serial ? { serial: 0 } : undefined).toArray()
+        }, {
+            sensorId: 0
+          }
+          /*!serial ? { serial: 0, sensorId: 0 } : undefined*/
+        ).toArray()
       } catch (err) {
         throw new ApplicationError('資料庫錯誤', 500, err)
       }
@@ -69,8 +73,9 @@ spacesRouter.get('/',
 spacesRouter.post('/random', auth('admins'), async (req, res, next) => {
   let count = Number.isNaN(+req.body.count) ? 100 : +req.body.count
   try {
-    let result = req.db.collection('spaces').remove({})
-    //result = await createRandom(req.db, count)
+    let result = await req.db.collection('spaces').remove({})
+    result = await req.db.collection('sensors').remove({})
+    result = await createRandom(req.db, count)
     res.json(result)
   } catch (err) {
     next(new ApplicationError('資料庫錯誤', 500, err))

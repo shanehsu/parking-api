@@ -8,11 +8,10 @@ interface Spaces {
   serial?: string
   rate: [number, number]
   managedBy?: string
-  sensorId: string
+  sensorId: mongodb.ObjectID | null
 }
 
-interface sensor {
-  id: string
+interface Sensor {
   latitude: number
   longitude: number
 }
@@ -49,18 +48,17 @@ function randomSpaces(): Spaces {
     // serial: manageSer[randManagerInt] + '-' + nameSer[randNameInt] + '-' + randSerStr,
     rate: [(Math.floor(Math.random() * 10) + 1), (Math.floor(Math.random() * 20) + 1) * 100],
     // managedBy: manage[randManagerInt]
-    sensorId: randomString(10, '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+    sensorId: null
   }
 }
 
 export async function createRandom(db: mongodb.Db, count: number) {
   let random_spaces: Spaces[] = []
-  let random_sensors: sensor[] = []
+  let random_sensors: Sensor[] = []
 
   for (let i = 0; i < count; ++i) {
     let randSpace = randomSpaces()
     let randSen = {
-      id: randomString(10, '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'),
       latitude: randSpace.latitude,
       longitude: randSpace.longitude
     }
@@ -68,12 +66,18 @@ export async function createRandom(db: mongodb.Db, count: number) {
     random_sensors.push(randSen)
   }
 
+
+  let result_sensor = await db.collection('sensors').insertMany(random_sensors)
+
+  for (let i = 0; i < count; ++i) {
+    random_spaces[i].sensorId = result_sensor.insertedIds[i]
+  }
   let result_spaces = await db.collection('spaces').insert(random_spaces)
-  let result_sensor = await db.collection('sensors').insert(random_sensors)
+
 
   await db.collection('spaces').createIndex({ latitude: 1, longitude: 1 })
 
-  return result_sensor
+  return result_spaces
 }
 
 // export async function createRandomSensor(db: mongodb.Db, count: number) {
