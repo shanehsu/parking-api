@@ -37,7 +37,7 @@ sensorUpdate.post('/sensorUpdate', async function (req, res) {
         let result = await req.db.collection('spaces').findOneAndUpdate(
             filter,
             {
-                $set: { parked: _parked }
+                $set: { available: _parked }
             },
             { maxTimeMS: 20000, /*returnNewDocument: true*/ }
         ).then(result => {
