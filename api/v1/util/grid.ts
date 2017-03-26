@@ -87,9 +87,10 @@ export class ConsecutiveGrids extends Grids {
     let result: Grid[] = []
     for (let longitudeBlock = 0; longitudeBlock <= this.longitudeGridSpan; ++longitudeBlock) {
       for (let latitudeBlock = 0; latitudeBlock <= this.latitudeGridSpan; ++latitudeBlock) {
-        result.push(new Grid(this.longitude + longitudeBlock * 0.01, this.latitude + latitudeBlock * 0.01))
+        result.push(new Grid((this.longitude * 100 + longitudeBlock) / 100, (this.latitude * 100 + latitudeBlock) / 100))
       }
     }
+
     return result
   }
 
