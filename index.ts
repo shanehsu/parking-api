@@ -8,9 +8,8 @@ import * as cors from 'cors'
 import { MongoDBMiddleware } from './mongo'
 import { apiRouter } from './api/apiRouter'
 import { checkFbRouter } from './fbLogin-api/fbRouter'
-import { sensorUpdate } from './sensor/sensorRouter'
+// import { sensorUpdate } from './sensor/sensorRouter'
 import { ApplicationError } from './util/error'
-
 
 let port: number = Number.parseInt(process.env.PORT) || 5000
 
@@ -33,7 +32,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/facebook', checkFbRouter)
-app.use('/sensor', sensorUpdate)
+// app.use('/sensor', sensorUpdate)
 
 app.use((err: ApplicationError, req: express.Request, res: express.Response, next: express.NextFunction) => {
   res.status(err.statusCode || 500).send({
