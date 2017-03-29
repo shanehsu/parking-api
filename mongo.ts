@@ -17,7 +17,7 @@ export class MongoDBMiddleware {
   private database: Db | null
 
   constructor() {
-    this.uri = process.env.MONGODB_URI
+    this.uri = process.env.MONGOLAB_YELLOW_URI
     this.client = new mongodb.MongoClient()
     this.connectionError = null
     this.database = null
