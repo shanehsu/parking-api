@@ -1,8 +1,8 @@
 import mongodb = require('mongodb')
 import { Router } from "express"
-var redis = require('redis')
+//var redis = require('redis')
 
-let client = redis.createClient()
+//let client = redis.createClient()
 
 export let sensorUpdate = Router()
 
@@ -15,6 +15,7 @@ sensorUpdate.post('/sensorUpdate', async function (req, res) {
     }
 
     // redis sub/pub
+    /*
     _parked = true
     client.hset("parking-hash", "id", function (res: any, err: any) {
         if (res == 1) {
@@ -31,6 +32,7 @@ sensorUpdate.post('/sensorUpdate', async function (req, res) {
     })
     spaces_id = req.body.id
     _parked = req.body.parked
+    */
     //...test.
 
     try {
