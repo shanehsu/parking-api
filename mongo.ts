@@ -17,7 +17,7 @@ export class MongoDBMiddleware {
   private database: Db | null
 
   constructor() {
-    this.uri = process.env.MONGOLAB_YELLOW_URI
+    this.uri = process.env.MONGODB_URI
     this.client = new mongodb.MongoClient()
     this.connectionError = null
     this.database = null
@@ -28,9 +28,11 @@ export class MongoDBMiddleware {
   async connect() {
     try {
       debug('db')(`開始連線至 ${this.uri}`)
-
-      let db = await this.client.connect(this.uri)
-      console.log("db connected!!!!!!!!!!!!!!!!!!!!!!")
+      let db = await this.client.connect(this.uri, {
+        db: {
+          bufferMaxEntries: 0
+        }
+      })
       this.database = db
       this.connectionError = null
     } catch (err) {
