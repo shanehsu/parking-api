@@ -55,3 +55,6 @@ sensorUpdate.post('/sensorUpdate', async function (req, res) {
     //console.log(result)
 
 })
+
+// TODO: Move Redis Connection to a middleware
+// TODO: Link this API to v1Router

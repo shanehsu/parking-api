@@ -5,11 +5,10 @@ import * as morgan from 'morgan'
 import * as debug from 'debug'
 import * as cors from 'cors'
 
-import { MongoDBMiddleware } from './mongo'
-import { apiRouter } from './api/apiRouter'
-import { checkFbRouter } from './fbLogin-api/fbRouter'
-// import { sensorUpdate } from './sensor/sensorRouter'
+import { MongoDBMiddleware } from './util/mongo'
 import { ApplicationError } from './util/error'
+
+import { apiRouter } from './api/apiRouter'
 
 let port: number = Number.parseInt(process.env.PORT) || 5000
 
@@ -27,15 +26,10 @@ app.use(new MongoDBMiddleware().middleware)
 
 app.use('/api', apiRouter)
 
-app.get('/', (req, res) => {
-  res.send('資料庫已經連線')
-})
-
-app.use('/facebook', checkFbRouter)
-// app.use('/sensor', sensorUpdate)
+app.get('/', (req, res) => res.send('資料庫已經連線'))
 
 app.use((err: ApplicationError, req: express.Request, res: express.Response, next: express.NextFunction) => {
-  res.status(err.statusCode || 500).send({
+  res.status(err.statusCode).send({
     message: err.message,
     raw: err.raw
   })
