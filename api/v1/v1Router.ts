@@ -1,5 +1,4 @@
 import { Router } from 'express'
-
 import { spacesRouter } from './spaces'
 import { loginRouter } from './login/loginRouter'
 import { sensorRouter } from './sensor/sensorRouter'
