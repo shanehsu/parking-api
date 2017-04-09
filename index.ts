@@ -6,6 +6,7 @@ import * as debug from 'debug'
 import * as cors from 'cors'
 
 import { MongoDBMiddleware } from './util/mongo'
+import { RedisMiddleware } from './util/redis'
 import { ApplicationError } from './util/error'
 
 import { apiRouter } from './api/apiRouter'
@@ -23,6 +24,8 @@ app.use('/admin', express.static(__dirname + '/admin'))
 app.use(cors())
 app.use(body_parser.json())
 app.use(new MongoDBMiddleware().middleware)
+app.use(new RedisMiddleware().middleware)
+
 
 app.use('/api', apiRouter)
 
