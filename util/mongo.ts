@@ -27,16 +27,17 @@ export class MongoDBMiddleware {
 
   async connect() {
     try {
-      debug('db')(`開始連線至 ${this.uri}`)
+      debug('mongo')(`開始連線至 ${this.uri}`)
       let db = await this.client.connect(this.uri, {
         db: {
           bufferMaxEntries: 0
         }
       })
+      debug('mongo')(`MongoDB 連線成功`)
       this.database = db
       this.connectionError = null
     } catch (err) {
-      debug('db')(`連線失敗，原因：${err.message}`)
+      debug('mongo')(`連線失敗，原因：${err.message}`)
       this.connectionError = err
       setTimeout(() => { this.connect() }, 1000)
     }
