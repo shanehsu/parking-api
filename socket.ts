@@ -32,5 +32,11 @@ io.on('connection', socket => {
             redis.subscribe(data)
         }
     })
+    socket.on('leave', (room: string) => {
+        socket.leave(room, function () {
+            console.log("socket left room: ")
+            console.dir(socket.rooms)
+        })
+    })
 })
 
