@@ -20,20 +20,17 @@ type RedisClient = redis.RedisClient
 export class RedisMiddleware {
   private client: RedisClient | null = null
   private connectionError: Error | null
-  private port: number
-  private host: string
   private url: string
 
   constructor() {
     this.connectionError = null
-    this.host = process.env.REDIS_HOST
-    this.port = process.env.REDIS_PORT
+    this.url = process.env.REDIS_URL
     this.connect()
   }
 
   connect() {
     debug('redis')(`開始連線Redis`)
-    let _client = redis.createClient({ port: this.port, host: this.host })
+    let _client = redis.createClient(this.url)
 
     _client.on('ready', () => {
       this.client = _client
