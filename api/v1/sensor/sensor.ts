@@ -8,7 +8,7 @@ export let sensorUpdate = Router()
 sensorUpdate.post('/', async function (req, res) {
   let sensor_id: string = req.body.id
   let space_id: string = ""
-  let _parked: boolean = req.body.parked
+  let _available: boolean = !req.body.parked
   let latitude: string = ""
   let longitude: string = ""
   let filter = {
@@ -19,7 +19,7 @@ sensorUpdate.post('/', async function (req, res) {
     let result = await req.db.collection('spaces').findOneAndUpdate(
       filter,
       {
-        $set: { available: _parked }
+        $set: { available: _available }
       },
       { maxTimeMS: 20000, /*returnNewDocument: true*/ }
     )
@@ -59,12 +59,12 @@ sensorUpdate.post('/', async function (req, res) {
       //if (res !== null) {
       //length = parseInt(res.charAt(1), 10)
       //}
-      //let qParked: string = _parked.toString()
+      //let qParked: string = _available.toString()
       //console.log("hget res length: " + length)
 
       if (res === null) {
         try {
-          let sParked: string = _parked.toString()
+          let sParked: string = _available.toString()
           let client = req.client.hset(grid, key, sParked, function (err: string, res: string) {
             if (res) {
               let message: string = key + ":" + sParked
@@ -84,12 +84,12 @@ sensorUpdate.post('/', async function (req, res) {
         console.log("res == true || false")
 
         let value: boolean = (res == 'true')
-        if (value === _parked) {
+        if (value === _available) {
           console.log("value is the same as usual..")
-        } else if (value === !_parked) {
+        } else if (value === !_available) {
           console.log("value changed!")
           try {
-            let sParked: string = _parked.toString()
+            let sParked: string = _available.toString()
             let message: string = key + ":" + sParked
 
             req.client.hset(grid, key, sParked, function (err: string, res: string) {
@@ -110,7 +110,7 @@ sensorUpdate.post('/', async function (req, res) {
           }
         }
       } else {
-        let sParked: string = _parked.toString()
+        let sParked: string = _available.toString()
         let client = req.client.hset(grid, key, sParked, function (err: string, res: string) {
           if (res) {
             let message: string = key + ":" + sParked

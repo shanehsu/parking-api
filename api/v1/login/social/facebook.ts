@@ -49,7 +49,7 @@ facebookRouter.post('/', async function (req, res, next) {
   // TODO: Find a way to make this a === check
   if (result) {
     // TODO: Update access token if you have to
-    res.json(result)
+    res.status(200).json(result)
   } else {
     let document = {
       links: [
